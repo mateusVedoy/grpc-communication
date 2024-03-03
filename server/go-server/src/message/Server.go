@@ -22,7 +22,7 @@ func (S *Server) Create(ctx context.Context, message *protobuf.CreateMessageRequ
 	}, nil
 }
 
-func (S *Server) Read(ctx context.Context, messageIds *protobuf.MessageIds) (*protobuf.Messages, error) {
+func (S *Server) Read(ctx context.Context, isRead *protobuf.UnreadMessageRequest) (*protobuf.Messages, error) {
 
 	log.Print("Received request to send unread messages")
 
