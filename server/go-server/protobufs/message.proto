@@ -18,8 +18,8 @@ message MessageId {
     string identifier = 1;
 }
 
-message MessageIds {
-    repeated MessageId identifiers = 1;
+message UnreadMessageRequest {
+    bool read = 1;
 }
 
 message Message {
@@ -33,6 +33,6 @@ message Messages {
 
 service MessageService {
     rpc Create(CreateMessageRequest) returns (Response);
-    rpc Read(MessageIds) returns (Messages);
+    rpc Read(UnreadMessageRequest) returns (Messages);
     rpc MarkAsRead(MessageId) returns (Response);
 }
