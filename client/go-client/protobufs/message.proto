@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package protobuf;
+
+option go_package="./src/protobuf";
+
+message CreateMessageRequest {
+    string content = 1;
+    bool read = 2;
+}
+
+message Response {
+    int32 statusCode = 1;
+    string message = 2;
+}
+
+message MessageId {
+    string identifier = 1;
+}
+
+message MessageIds {
+    repeated MessageId identifiers = 1;
+}
+
+message Message {
+    string identifier = 1;
+    string content = 2;
+}
+
+message Messages {
+    repeated Message messages = 1;
+}
+
+service MessageService {
+    rpc Create(CreateMessageRequest) returns (Response);
+    rpc Read(MessageIds) returns (Messages);
+    rpc MarkAsRead(MessageId) returns (Response);
+}
