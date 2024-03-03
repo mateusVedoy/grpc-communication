@@ -24,6 +24,7 @@ func (R *Router) Start() {
 	route.Use(middleware.Timeout(60 * time.Second))
 
 	route.Post("/message/create", R.controller.CreateMessage)
+	route.Get("/message/read", R.controller.ReadMessage)
 
 	panic(http.ListenAndServe(":8080", route))
 }

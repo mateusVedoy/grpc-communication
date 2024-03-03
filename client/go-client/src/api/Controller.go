@@ -15,7 +15,7 @@ type Controller struct {
 	client_grpc *grpc.ClientGRPC
 }
 
-func (C Controller) CreateMessage(w http.ResponseWriter, r *http.Request) {
+func (C *Controller) CreateMessage(w http.ResponseWriter, r *http.Request) {
 
 	request := &CreateMessageRequest{}
 
@@ -53,6 +53,30 @@ func (C Controller) CreateMessage(w http.ResponseWriter, r *http.Request) {
 		StatusCode: 200,
 		Message:    "Message delivered successfully",
 	})
+}
+
+func (C *Controller) ReadMessage(w http.ResponseWriter, r *http.Request) {
+	conn := C.client_grpc.Server()
+	defer conn.Close()
+
+	serverConn := protobuf.NewMessageServiceClient(conn)
+
+	unread := &protobuf.UnreadMessageRequest{
+		Read: false,
+	}
+
+	response, responseErr := serverConn.Read(context.Background(), unread)
+
+	if responseErr != nil {
+		response := &ApiResponse{
+			StatusCode: 400,
+			Message:    responseErr.Error(),
+		}
+		C.render.JSON(w, 400, response)
+		return
+	}
+
+	C.render.JSON(w, 200, response)
 }
 
 func NewController() *Controller {
