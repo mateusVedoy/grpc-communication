@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package protobuf;
 
-option go_package="./src/protobuf";
-
 message CreateMessageRequest {
     string content = 1;
     bool read = 2;
@@ -25,6 +23,7 @@ message UnreadMessageRequest {
 message Message {
     string identifier = 1;
     string content = 2;
+    bool read = 3;
 }
 
 message Messages {

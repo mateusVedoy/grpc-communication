@@ -25,6 +25,7 @@ message UnreadMessageRequest {
 message Message {
     string identifier = 1;
     string content = 2;
+    bool read = 3;
 }
 
 message Messages {
