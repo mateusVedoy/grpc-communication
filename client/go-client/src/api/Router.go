@@ -25,6 +25,7 @@ func (R *Router) Start() {
 
 	route.Post("/message/create", R.controller.CreateMessage)
 	route.Get("/message/read", R.controller.ReadMessage)
+	route.Get("/message/readed/{identifier}", R.controller.MarkAsRead)
 
 	panic(http.ListenAndServe(":8080", route))
 }
