@@ -16,6 +16,7 @@ func (C ClientGRPC) Server() *grpc.ClientConn {
 
 	if connErr != nil {
 		log.Fatalf("Client gRPC connection error. Reason: %s", connErr)
+		return nil
 	}
 
 	C.conn = conn
