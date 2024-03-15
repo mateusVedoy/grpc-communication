@@ -7,6 +7,7 @@ option go_package="./src/protobuf";
 message CreateMessageRequest {
     string content = 1;
     bool read = 2;
+    bytes aside = 3;
 }
 
 message Response {
@@ -26,6 +27,7 @@ message Message {
     string identifier = 1;
     string content = 2;
     bool read = 3;
+    bytes aside = 4;
 }
 
 message Messages {
