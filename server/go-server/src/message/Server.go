@@ -26,6 +26,7 @@ func (S *Server) Create(ctx context.Context, message *protobuf.CreateMessageRequ
 		Identifier: uuid.NewString(),
 		Content:    message.Content,
 		Read:       message.Read,
+		Aside:      message.Aside,
 	}
 
 	messages = append(messages, msg)
