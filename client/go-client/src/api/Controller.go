@@ -2,6 +2,8 @@ package api
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi"
@@ -29,9 +31,17 @@ func (C *Controller) CreateMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	byt, errJson := json.Marshal(request.Aside)
+
+	if errJson != nil {
+		C.render.JSON(w, 400, errJson)
+		return
+	}
+
 	createMessage := &protobuf.CreateMessageRequest{
 		Content: request.Message,
 		Read:    false,
+		Aside:   byt,
 	}
 
 	conn := C.client_grpc.Server()
@@ -77,7 +87,27 @@ func (C *Controller) ReadMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	C.render.JSON(w, 200, response)
+	var messages Messages
+
+	for _, msg := range response.Messages {
+
+		var asd any
+
+		err := json.Unmarshal(msg.Aside, &asd)
+
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+
+		newMsg := Message{
+			Message: msg.Content,
+			Aside:   asd,
+		}
+
+		messages.Messages = append(messages.Messages, newMsg)
+	}
+
+	C.render.JSON(w, 200, messages)
 }
 
 func (C *Controller) MarkAsRead(w http.ResponseWriter, r *http.Request) {
